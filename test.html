@@ -1,0 +1,164 @@
+<style>
+
+.viewport{
+	height:406px;
+	width:300px;
+	overflow: hidden;
+}
+
+.box{
+	display:inline-block;
+	float:right;
+	position:relative;
+}
+
+.container{
+	width:200%;
+	position:relative;
+	left: -100%;
+}
+
+</style>
+
+<div class="viewport">
+	<div class="container">
+		<div class="box">
+			<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dwwprod1?$JPG%20No%20Scale%2085pc$&scl=2">
+		</div>
+		<div class="box">
+			<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dwwprod1b?$JPG%20No%20Scale%2085pc$&scl=2">
+		</div>
+		<div class="box">
+			<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dmwprod1?$JPG%20No%20Scale%2085pc$&scl=2">
+		</div>
+		<div class="box">
+			<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dmwprod1b?$JPG%20No%20Scale%2085pc$&scl=2">
+		</div>
+	</div>
+</div>
+
+<div class="button">
+<ul>
+	<li class="slider-left">Left</li>
+	<li class="slider-right">Right</li>
+</ul>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="multi-slider-new.js"></script>
+
+<script>
+// var blah = function(container, config){
+
+// 	var container = container;
+	
+// 	//Config Attributes
+// 	var delay = config['delay'];
+// 	var interval = config['interval'];
+// 	var direction = config['direction'];
+// 	var animSpeed = config['animSpeed'];
+
+// 	//Set defaults
+// 	var defaultDelay = 1000;
+// 	var defaultInterval = 1000;
+// 	var defaultDirection = 'left';
+// 	var defaultAnimSpeed = 800;
+
+// 	//Test if undefined
+// 	delay = (typeof delay === "undefined") ? defaultDelay : delay;
+// 	interval = (typeof interval === "undefined") ? defaultInterval : interval;
+// 	direction = (typeof direction === "undefined") ? defaultDirection : direction;
+// 	animSpeed = (typeof animSpeed === "undefined") ? defaultAnimSpeed : animSpeed;
+
+// 	//No. of pics and last pic
+// 	var pictureNum = $(container + ' .box').length;
+// 	var lastPic = pictureNum - 1;
+
+// 	var animReset = {};
+// 	animReset[direction] = '0%';
+
+// 	var animInProgress = false;
+
+// 	$(window).on('keydown', keyPressFunction);
+
+// 	$('.slider-left').on('click', keyPressFunction);
+// 	$('.slider-right').on('click', keyPressFunction);
+
+// 	function keyPressFunction(e){
+
+// 		var keyPressLeft = (typeof e.which != 'undefined' && e.which === 37);
+// 		var keyPressRight = (typeof e.which != 'undefined' && e.which === 39);
+
+// 		var clickPressVarLeft = (typeof e.which != 'undefined' && $(this).is(".slider-left") === true);
+// 		var clickPressVarRight = (typeof e.which != 'undefined' && $(this).is(".slider-right") === true);
+
+// 		if ( keyPressLeft || clickPressVarLeft ){
+
+// 			if (animInProgress === true){
+// 				return false;
+// 			}
+
+// 			animInProgress = true;
+		
+// 			var first = $(container + ' .box')[0];
+// 			var second = $(container + ' .box')[1];
+// 			var last = $(container + ' .box')[lastPic];
+
+// 			var manualSlideAll = function(){
+// 				$(first).animate(animDirec,animSpeed, function(){
+// 					$(first).insertAfter(last);
+// 					$(first).css(animReset);
+// 				});
+// 				$(second).animate(animDirec,animSpeed, function(){
+// 					$(second).css(animReset);
+// 					animInProgress = false;
+// 				});
+// 			};
+			
+// 			var animDirec = {};
+// 			animDirec[direction] = '-50%';
+// 			manualSlideAll();
+		
+// 		} else if ( keyPressRight || clickPressVarRight ) {
+
+// 			if (animInProgress === true){
+// 				return false;
+// 			}
+
+// 			animInProgress = true;
+		
+// 			var first = $(container + ' .box')[0];
+// 			var second = $(container + ' .box')[1];
+// 			var last = $(container + ' .box')[lastPic];
+
+// 			var manualSlideAll = function(){
+// 				$(last).insertBefore(first);
+// 				$(container).css({'position':'relative', 'left':'-100%'})
+				
+// 				$(first).animate(animDirec,animSpeed);
+
+// 				$(last).animate(animDirec,animSpeed, function(){
+// 					$(container).css({'left':'0%'});
+// 					$(last).css(animReset);
+// 					$('.box').css({'left':'0%'});
+// 					animInProgress = false;
+// 				});
+
+
+// 			};
+			
+// 			var animDirec = {};
+// 			animDirec[direction] = '50%';
+// 			manualSlideAll();
+		
+// 		}
+		
+// 	};
+
+
+
+// };
+
+// 	$(document).ready(
+// 		blah('.container', {direction: 'left', interval:3000, delay:0, animSpeed:800})
+// 	);
+</script>
