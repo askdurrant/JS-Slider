@@ -1,5 +1,19 @@
 var slideFunc = function(container, config){
 
+	//Hide and show play and pause buttons
+	var playButton = function(){
+		$('.slider-pause').css('display','none');
+		$('.slider-play').css('display','block').fadeOut(1500, function(){
+			$(this).css('display', 'none');
+		});
+	};
+
+	var pauseButton = function(){
+		$('.slider-pause').css('display', 'block');
+	};	
+
+	playButton();
+
 	var container = container;
 	
 	//Config Attributes
@@ -197,9 +211,11 @@ var slideFunc = function(container, config){
 	//Stop on hover
 	$('.viewport').on('mouseenter', function(){
 		clearInterval(time);
+		pauseButton();
 	});
 	$('.viewport').on('mouseleave',function(){
 		time = setInterval(function(){slide()},interval);
+		playButton();
 	});
 
 	//Change direction
@@ -346,6 +362,6 @@ var slideFunc = function(container, config){
 	};
 };
 
-$(document).ready(
-slideFunc('.container', {direction: 'right', interval:3000, delay:0, animSpeed:800, controls: true})
+$(document).ready( 
+	slideFunc('.container', {direction: 'right', interval:3000, delay:0, animSpeed:800, controls: true})
 );

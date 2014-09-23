@@ -4,6 +4,7 @@
 	height:406px;
 	width:300px;
 	overflow: hidden;
+	position:relative;
 }
 
 .box{
@@ -23,9 +24,25 @@
 	float:right;
 }
 
+.status{
+	
+}
+
+.status img{
+	position: absolute;
+	margin: auto;
+	right: 2%;
+	bottom: 2%;
+	z-index: 999;
+}
+
 </style>
 
 <div class="viewport">
+	<div class="status">
+		<img class="slider-play slider-button" src="play.png" style="display:none"/>
+		<img class="slider-pause slider-button" src="pause.png" style="display:none"/>
+	</div>
 	<div class="container">
 		<div class="box">
 			<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dwwprod1?$JPG%20No%20Scale%2085pc$&scl=2">
@@ -63,6 +80,7 @@
 </ul>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
 <script src="multi-slider-new.js"></script>
 
 <script>
