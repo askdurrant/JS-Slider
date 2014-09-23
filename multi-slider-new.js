@@ -35,8 +35,10 @@ var slideFunc = function(container, config){
 	var lastPic = pictureNum - 1;
 
 	//Sets width of container
-	var totalContainerWidth = pictureNum * 100 + '%';
-	$(container).width(totalContainerWidth);
+	if (direction === "left" || direction === "right"){
+		var totalContainerWidth = pictureNum * 100 + '%';
+		$(container).width(totalContainerWidth);
+	}
 
 	//Calculates the offset for the container if the direction is 'right'
 	var containerOffset;
@@ -347,5 +349,5 @@ var slideFunc = function(container, config){
 };
 
 $(document).ready(
-slideFunc('.container', {direction: 'left', interval:3000, delay:0, animSpeed:800, controls: true})
+slideFunc('.container', {direction: 'right', interval:3000, delay:0, animSpeed:800, controls: true})
 );
