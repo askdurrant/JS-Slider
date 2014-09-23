@@ -10,14 +10,17 @@ var slideFunc = function(container, config){
 	var controls = config['controls'];
 
 	//Set default values for config attributes
-	var defaultDelay = 1000;
+	var defaultDelay = 0;
 	var defaultInterval = 1000;
 	var defaultDirection = 'left';
 	var defaultAnimSpeed = 800;
-	var defaultControls = false;
+	var defaultControls = true;
 
-	//Animate by default
+	//Available for animating. Sets default value to true
 	var availableForAnimating = true;
+
+	//Stores value if a change of direction is requested during an animation is active
+	var queueDirectionChange;
 
 	//Test to see if any attributes are undefined.
 	//If undefined set to default value
@@ -31,10 +34,11 @@ var slideFunc = function(container, config){
 	var pictureNum = $(container + ' .box').length;
 	var lastPic = pictureNum - 1;
 
-	//Set width of container
+	//Sets width of container
 	var totalContainerWidth = pictureNum * 100 + '%';
 	$(container).width(totalContainerWidth);
 
+	//Calculates the offset for the container if the direction is 'right'
 	var containerOffset;
 	var containerOffsetFn = function(){
 		if(direction === 'right'){
@@ -46,20 +50,21 @@ var slideFunc = function(container, config){
 		}
 	};
 
+	//Calls function in case direction is 'right' intially
 	containerOffsetFn();
 
-	//Set Interval
+	//Sets interval for slide function
 	var time = setInterval(function(){slide()},interval);
 
+	//Positions bottom of container div to bottom of viewport
 	if (direction === 'top'){
-		//Positions bottom of container div to bottom of viewport
 		var topStyle = {}
 		bottomPercentage = (pictureNum - 1) * 100 + '%';
 		topStyle['bottom'] = bottomPercentage;
 		$(container).css(topStyle);
 	}
 
-	//Add class
+	//Adds class for left and right directions for initial direction definition
 	if(direction === 'left'){
 		$('.box').addClass('box-left');
 	}
@@ -67,21 +72,21 @@ var slideFunc = function(container, config){
 		$('.box').addClass('box-right');
 	}
 
-	//Change direction of slider
-	var queueDirection;
-
+	//Changes direction of slide on mouse click
+	//Checks if animation is already in progress. If so, stroes string in
+	//queueDirectionChange
 	var changeDirection = function(){
 		if (animInProgress === true || availableForAnimating === false){
-			queueDirection = 'queue';
-			return queueDirection;
+			queueDirectionChange = 'queue';
+			return queueDirectionChange;
 		}
-
 		else{
 			if(direction === 'left'){
 				direction = 'right';
 				$(container).removeClass('left').addClass('right').css('left',containerOffset);
 				$('.box').removeClass('box-left').addClass('box-right');
-				$('.box').css('left', '').css('right','')
+				$('.box').css('left', '').css('right','');
+				containerOffsetFn();
 				return direction;
 			}
 			else if(direction === 'right'){
@@ -94,24 +99,27 @@ var slideFunc = function(container, config){
 		}
 	};
 
-	$('.slider-switch').on('click', changeDirection);
-
-	//Slide Function
+	//Slide Function. If animation is progress, will not animate
 	var slide = function(){
 		if (availableForAnimating === false){
 			return false;
 		}
 
-		if (queueDirection !== undefined){
+		if (queueDirectionChange !== undefined){
 			changeDirection();
-			queueDirection = undefined;
+			queueDirectionChange = undefined;
 		}
 
-		//Set container offset for right animation
+		//Check if 'right', sets container offset for right animation
 		containerOffsetFn();
 
+		//Flag so no further animations will take place
 		availableForAnimating = false;
+
+		//If a delay is required for multiple slide animations
+		//slideTImer function is used. Default = 0ms
 		var slideTimer = setTimeout(function(){
+			//Defines positions of .boxes in container array
 			var first = $(container + ' .box')[0];
 			var second = $(container + ' .box')[1];
 			var secondLast = $(container + ' .box')[lastPic - 1];
@@ -121,7 +129,7 @@ var slideFunc = function(container, config){
 			var animReset = {};
 			animReset[direction] = '0%';
 
-			//Set slide functions
+			//Set slide functions for left, right, bottom
 			var slideAll = function(){
 				$(first).animate(animDirec,animSpeed, function(){
 					$(first).insertAfter(last);
@@ -131,7 +139,7 @@ var slideFunc = function(container, config){
 				$(second).animate(animDirec,animSpeed, function(){
 					$(second).css(animReset);
 					$(second).addClass('second');
-					availableForAnimating = true;
+					availableForAnimating = true; //Avaiable for animating again
 				});
 			};
 
@@ -144,7 +152,6 @@ var slideFunc = function(container, config){
 				topStyle['bottom'] = bottomPercentage;
 				$(container).css(topStyle);
 
-				//Animation
 				$(last).animate(animDirec,animSpeed, function(){
 					$(last).insertBefore(first);
 					$(last).css(animReset);
@@ -153,7 +160,7 @@ var slideFunc = function(container, config){
 				$(secondLast).animate(animDirec,animSpeed, function(){
 					$(secondLast).css(animReset);
 					$(secondLast).addClass('second');
-					availableForAnimating = true;
+					availableForAnimating = true; //Avaiable for animating again
 				}); 					
 			};
 
@@ -187,14 +194,17 @@ var slideFunc = function(container, config){
 
 	//Stop on hover
 	$('.viewport').on('mouseenter', function(){
-		console.log('blaj');
 		clearInterval(time);
 	});
 	$('.viewport').on('mouseleave',function(){
 		time = setInterval(function(){slide()},interval);
 	});
 
-	//Manual Slide	
+	//Change direction
+	$('.slider-switch').on('click', changeDirection);
+
+	//Manual Slide function on click or keyboard event
+	//Controls are on by default
 	if (controls === true) {
 		var animReset = {};
 		animReset[direction] = '0%';
@@ -208,8 +218,8 @@ var slideFunc = function(container, config){
 
 		function keyPressFunction(e){
 
-			var keyPressLeft = (typeof e.which != 'undefined' && e.which === 37);
-			var keyPressRight = (typeof e.which != 'undefined' && e.which === 39);
+			var keyPressLeft = (typeof e.which != 'undefined' && e.which === 37); //Left arrow
+			var keyPressRight = (typeof e.which != 'undefined' && e.which === 39); //Right arrow
 
 			var clickPressVarLeft = (typeof e.which != 'undefined' && $(this).is(".slider-left") === true);
 			var clickPressVarRight = (typeof e.which != 'undefined' && $(this).is(".slider-right") === true);
@@ -219,7 +229,6 @@ var slideFunc = function(container, config){
 				if (animInProgress === true || availableForAnimating === false){
 					return false;
 				}
-
 
 				animInProgress = true;
 				availableForAnimating = false;
@@ -252,7 +261,7 @@ var slideFunc = function(container, config){
 				else if (direction === "right"){
 					var manualSlideAll = function(){
 						$(last).insertBefore(first);
-						$(container).css({'left': -(pictureNum - 2)*100 + '%'})
+						$(container).css({'left': -(pictureNum - 2)*100 + '%'});
 
 					$(first).animate(animDirec,animSpeed);
 
@@ -262,6 +271,7 @@ var slideFunc = function(container, config){
 						$('.box').css({'right':'0%'});
 						animInProgress = false;
 						availableForAnimating = true;
+						$('.box').css({'left': ''});
 						});
 						slide();
 					};
@@ -277,7 +287,6 @@ var slideFunc = function(container, config){
 					return false;
 				}
 
-
 				animInProgress = true;
 				availableForAnimating = false;
 			
@@ -287,7 +296,6 @@ var slideFunc = function(container, config){
 				var last = $(container + ' .box')[lastPic];
 
 				if (direction === "left"){
-
 					var manualSlideAll = function(){
 						$(last).insertBefore(first);
 						$(container).css({'left':'-100%'});
@@ -314,9 +322,11 @@ var slideFunc = function(container, config){
 						$(first).animate(animDirec,animSpeed, function(){
 							$(first).insertAfter(last);
 							$(first).css(animReset);
+							$(first).css('left', '').css('right', '');
 						});
 						$(second).animate(animDirec,animSpeed, function(){
 							$(second).css(animReset);
+							$(second).css('left', '').css('right', '');
 							animInProgress = false;
 							availableForAnimating = true;
 						});
