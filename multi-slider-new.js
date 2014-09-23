@@ -226,7 +226,7 @@ var slideFunc = function(container, config){
 			var clickPressVarLeft = (typeof e.which != 'undefined' && $(this).is(".slider-left") === true);
 			var clickPressVarRight = (typeof e.which != 'undefined' && $(this).is(".slider-right") === true);
 
-			if ( keyPressLeft || clickPressVarLeft ){
+			if ( keyPressLeft === true || clickPressVarLeft === true){
 
 				if (animInProgress === true || availableForAnimating === false){
 					return false;
@@ -283,7 +283,7 @@ var slideFunc = function(container, config){
 					manualSlideAll();
 				}
 			
-			} else if ( keyPressRight || clickPressVarRight ) {
+			} else if ( keyPressRight === true || clickPressVarRight === true ) {
 				
 				if (animInProgress === true || availableForAnimating === false){
 					return false;
@@ -341,9 +341,7 @@ var slideFunc = function(container, config){
 				}
 				
 			}
-			else{
-				return false;
-			}
+
 		};
 	};
 };
