@@ -67,7 +67,7 @@ var slideFunc = function(container, config){
 			containerOffsetFn();
 
 			//Sets interval for slide function
-			var time = setInterval(function(){slide()},interval);
+			var time = setInterval(function(){slide();},interval);
 
 			//Positions bottom of container div to bottom of viewport
 			if (direction === 'top'){
@@ -75,7 +75,7 @@ var slideFunc = function(container, config){
 				bottomPercentage = (pictureNum - 1) * 100 + '%';
 				topStyle['bottom'] = bottomPercentage;
 				$(container).css(topStyle);
-			}
+			};
 
 			//Adds class for left and right directions for initial direction definition
 			if(direction === 'left'){
@@ -142,6 +142,7 @@ var slideFunc = function(container, config){
 					//Set animate end point
 					var animReset = {};
 					animReset[direction] = '0%';
+					var animDirec;
 
 					//Set slide functions for left, right, bottom
 					var slideAll = function(){
@@ -180,22 +181,22 @@ var slideFunc = function(container, config){
 
 					//Set animate CSS Direction
 					if(direction === 'bottom'){
-						var animDirec = {};
+						animDirec = {};
 						animDirec[direction] = '100%';
 						slideAll();
 					}
 					else if(direction === 'left'){
-						var animDirec = {};
+						animDirec = {};
 						animDirec[direction] = -100 / pictureNum + "%";
 						slideAll();
 					}
 					else if(direction === 'right'){
-						var animDirec = {};
+						animDirec = {};
 						animDirec[direction] = -100 / pictureNum + "%";
 						slideAll();
 					}
 					else if(direction === 'top'){
-						var animDirec = {};
+						animDirec = {};
 						animDirec[direction] = '100%';
 						slideTop();
 					}
@@ -235,38 +236,39 @@ var slideFunc = function(container, config){
 
 			//Manual Slide function on click or keyboard event
 			//Controls are on by default
+			var animReset = {};
+			animReset[direction] = '0%';
+			var keyPressFunction;
+
+			var animInProgress = false;
+
+			$(window).on('keydown', keyPressFunction);
+
+			$('.slider-left').on('click', keyPressFunction);
+			$('.slider-right').on('click', keyPressFunction);
+
+			function keyPressFunction(e){
+
 			if (controls === true) {
-				var animReset = {};
-				animReset[direction] = '0%';
+				var keyPressLeft = (typeof e.which != 'undefined' && e.which === 37); //Left arrow
+				var keyPressRight = (typeof e.which != 'undefined' && e.which === 39); //Right arrow
 
-				var animInProgress = false;
+				var clickPressVarLeft = (typeof e.which != 'undefined' && $(this).is(".slider-left") === true);
+				var clickPressVarRight = (typeof e.which != 'undefined' && $(this).is(".slider-right") === true);
 
-				$(window).on('keydown', keyPressFunction);
+				if ( keyPressLeft === true || clickPressVarLeft === true){
 
-				$('.slider-left').on('click', keyPressFunction);
-				$('.slider-right').on('click', keyPressFunction);
+					if (animInProgress === true || availableForAnimating === false){
+						return false;
+					}
 
-				function keyPressFunction(e){
-
-					var keyPressLeft = (typeof e.which != 'undefined' && e.which === 37); //Left arrow
-					var keyPressRight = (typeof e.which != 'undefined' && e.which === 39); //Right arrow
-
-					var clickPressVarLeft = (typeof e.which != 'undefined' && $(this).is(".slider-left") === true);
-					var clickPressVarRight = (typeof e.which != 'undefined' && $(this).is(".slider-right") === true);
-
-					if ( keyPressLeft === true || clickPressVarLeft === true){
-
-						if (animInProgress === true || availableForAnimating === false){
-							return false;
-						}
-
-						animInProgress = true;
-						availableForAnimating = false;
-					
-						var first = $(container + ' .box')[0];
-						var second = $(container + ' .box')[1];
-						var secondLast = $(container + ' .box')[lastPic - 1];
-						var last = $(container + ' .box')[lastPic];
+					animInProgress = true;
+					availableForAnimating = false;
+				
+					var first = $(container + ' .box')[0];
+					var second = $(container + ' .box')[1];
+					var secondLast = $(container + ' .box')[lastPic - 1];
+					var last = $(container + ' .box')[lastPic];
 
 						if (direction === "left"){
 							var manualSlideAll = function(){
@@ -371,7 +373,7 @@ var slideFunc = function(container, config){
 			}
 		}
 		animSlideFn();
-	}
+	};
 	//Fade functionality
 	//Images will cycle through with a fade animation.
 	if (animFade === true){
@@ -423,5 +425,4 @@ var slideFunc = function(container, config){
 };
 
 $(document).ready( 
-	slideFunc('.container', {direction: 'right', interval:2000, delay:0, animSpeed:800, controls: true, pauseOnHover: false, animFade: true})
-);
+	slideFunc('.container', {direction: 'left', interval:2000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animSlide: true}));
