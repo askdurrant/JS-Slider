@@ -380,13 +380,13 @@ var slideFunc = function(container, config){
             }
         }
         animSlideFn();
-    };
+    }
     //Fade functionality
     //Images will cycle through with a fade animation.
-    if (animFade === true){
+    else if (animFade === true){
 
-        $('.box').css("position", "absolute");
-        $('.box:not(:first)').css("display","none");
+        $(container + ' .box').css("position", "absolute");
+        $(container + ' .box:not(:first)').css("display","none");
         var fadeInterval = setInterval(function(){fade()},interval);
         var fade = function(){
             
@@ -394,11 +394,11 @@ var slideFunc = function(container, config){
                 var second = $(container + ' .box')[1];
                 var last = $(container + ' .box')[lastPic];
 
-                $(first).css("display","block").fadeOut(3000, function(){
+                $(first).css("display","block").fadeOut(animSpeed, function(){
                     $(first).css("display", "none");
                     $(first).insertAfter(last);
                 });
-                $(second).fadeIn(3000, function(){
+                $(second).fadeIn(animSpeed, function(){
                     $(second).css("display","block");                       
             });
         }
@@ -407,7 +407,7 @@ var slideFunc = function(container, config){
             //Hide and show play and pause buttons
             var playButton = function(){
                 $('.slider-pause').css('display','none');
-                $('.slider-play').css('display','block').fadeOut(1500, function(){
+                $('.slider-play').css('display','block').fadeOut(animSpeed, function(){
                     $(this).css('display', 'none');
                 });
             };
