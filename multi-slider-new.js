@@ -11,6 +11,8 @@ var slideFunc = function(container, config){
     var pauseOnHover = config['pauseOnHover'];
     var animSlide = config ['animSlide'];
     var animFade = config ['animFade'];
+    var anim = config ['anim'];
+    var progressBar = config ['progressBar'];
 
     //Set default values for config attributes
     var defaultDelay = 0;
@@ -21,6 +23,8 @@ var slideFunc = function(container, config){
     var defaultPauseOnHover = true;
     var defaultAnimSlide = false;
     var defaultAnimFade = false;
+    var defaultAnim = true;
+    var defaultProgress = false;
 
     //Available for animating. Sets default value to true
     var availableForAnimating = true;
@@ -38,12 +42,35 @@ var slideFunc = function(container, config){
     pauseOnHover = (typeof pauseOnHover === "undefined") ? defaultPauseOnHover : pauseOnHover;
     animSlide = (typeof animSlide === "undefined") ? defaultAnimSlide : animSlide;
     animFade = (typeof animFade === "undefined") ? defaultAnimFade : animFade;
+    anim = (typeof anim === "undefined") ? defaultAnim : anim;
+    progressBar = (typeof progressBar === "undefined") ? defaultProgress : progressBar;
 
     //Find number of pics and last pic position
     var pictureNum = $(container + ' .box').length;
     var lastPic = pictureNum - 1;
 
     if(animSlide === true){
+
+        if(progressBar === true){
+            $('.button').append('<ul class="progress-bar"></ul>');
+            for(i=0; i < pictureNum; i++){
+                boxNumber = 'position' + (i+1);
+                boxElement = $('.box')[i];
+                $('.progress-bar').append('<li class="' + boxNumber + '">' + (i + 1) + '</li>');
+                $(boxElement).addClass(boxNumber);
+            }
+            var selectedBox = $('.box')[0];
+            $(selectedBox).addClass('selected');      
+
+            if($(container + ' > div').hasClass('selected') === true){
+                console.log($('.selected').attr("class"));
+            }       
+
+            var blah = 'position' + [0];
+            var blahCont = $(container + ' .box')[0];
+
+        }
+
         var animSlideFn = function(){
             //Sets width of container
             if (direction === "left" || direction === "right"){
@@ -67,8 +94,9 @@ var slideFunc = function(container, config){
             containerOffsetFn();
 
             //Sets interval for slide function
-            var time = setInterval(function(){slide();},interval);
-
+            if(anim === true){
+                var time = setInterval(function(){slide();},interval);
+            }
             //Positions bottom of container div to bottom of viewport
             if (direction === 'top'){
                 var topStyle = {}
@@ -118,98 +146,104 @@ var slideFunc = function(container, config){
                     }
                 }
             };
-
-            //Slide Function. If animation is progress, will not animate
-            var slide = function(){
-                if (availableForAnimating === false){
-                    return false;
-                }
-
-                //Test to see if direction change has been queued up
-                if (queueDirectionChange !== undefined){
-                    changeDirection();
-                    queueDirectionChange = undefined;
-                }
-
-                //Check if 'right', sets container offset for right animation
-                containerOffsetFn();
-
-                //Flag so no further animations will take place
-                availableForAnimating = false;
-
-                //If a delay is required for multiple slide animations
-                //slideTImer function is used. Default = 0ms
-                var slideTimer = setTimeout(function(){
-                    //Defines positions of .boxes in container array
-                    var first = $(container + ' .box')[0];
-                    var second = $(container + ' .box')[1];
-                    var secondLast = $(container + ' .box')[lastPic - 1];
-                    var last = $(container + ' .box')[lastPic];
-
-                    //Set animate end point
-                    var animReset = {};
-                    animReset[direction] = '0%';
-                    var animDirec;
-
-                    //Set slide functions for left, right, bottom
-                    var slideAll = function(){
-                        $(first).animate(animDirec,animSpeed, function(){
-                            $(first).insertAfter(last);
-                            $(first).css(animReset);
-                            $(first).addClass('first');
-                        });
-                        $(second).animate(animDirec,animSpeed, function(){
-                            $(second).css(animReset);
-                            $(second).addClass('second');
-                            availableForAnimating = true; //Avaiable for animating again
-                        });
-                    };
-
-                    //Slide down from top function
-                    var slideTop = function(){
-
-                        //Positions bottom of container div to bottom of viewport
-                        var topStyle = {}
-                        bottomPercentage = (pictureNum - 1) * 100 + "%";
-                        topStyle['bottom'] = bottomPercentage;
-                        $(container).css(topStyle);
-
-                        $(last).animate(animDirec,animSpeed, function(){
-                            $(last).insertBefore(first);
-                            $(last).css(animReset);
-                            $(last).addClass('first');
-                        });
-                        $(secondLast).animate(animDirec,animSpeed, function(){
-                            $(secondLast).css(animReset);
-                            $(secondLast).addClass('second');
-                            availableForAnimating = true; //Avaiable for animating again
-                        });                     
-                    };
-
-                    //Set animate CSS Direction
-                    if(direction === 'bottom'){
-                        animDirec = {};
-                        animDirec[direction] = '100%';
-                        slideAll();
-                    }
-                    else if(direction === 'left'){
-                        animDirec = {};
-                        animDirec[direction] = -100 / pictureNum + "%";
-                        slideAll();
-                    }
-                    else if(direction === 'right'){
-                        animDirec = {};
-                        animDirec[direction] = -100 / pictureNum + "%";
-                        slideAll();
-                    }
-                    else if(direction === 'top'){
-                        animDirec = {};
-                        animDirec[direction] = '100%';
-                        slideTop();
+            
+            // Automatic animation option
+            if(anim === true){
+                //Slide Function. If animation is progress, will not animate
+                var slide = function(){
+                    if (availableForAnimating === false){
+                        return false;
                     }
 
-                }, delay);
-            };
+                    //Test to see if direction change has been queued up
+                    if (queueDirectionChange !== undefined){
+                        changeDirection();
+                        queueDirectionChange = undefined;
+                    }
+
+                    //Check if 'right', sets container offset for right animation
+                    containerOffsetFn();
+
+                    //Flag so no further animations will take place
+                    availableForAnimating = false;
+
+                    //If a delay is required for multiple slide animations
+                    //slideTImer function is used. Default = 0ms
+                    var slideTimer = setTimeout(function(){
+                        //Defines positions of .boxes in container array
+                        var first = $(container + ' .box')[0];
+                        var second = $(container + ' .box')[1];
+                        var secondLast = $(container + ' .box')[lastPic - 1];
+                        var last = $(container + ' .box')[lastPic];
+
+                        //Set animate end point
+                        var animReset = {};
+                        animReset[direction] = '0%';
+                        var animDirec;
+
+                        //Set slide functions for left, right, bottom
+                        var slideAll = function(){
+                            $(first).animate(animDirec,animSpeed, function(){
+                                $(first).insertAfter(last);
+                                $(first).css(animReset);
+                                $(first).addClass('first');
+                            });
+                            $(second).animate(animDirec,animSpeed, function(){
+                                $(second).css(animReset);
+                                $(second).addClass('second');
+                                availableForAnimating = true; //Avaiable for animating again
+                            });
+                        };
+
+                        //Slide down from top function
+                        var slideTop = function(){
+
+                            //Positions bottom of container div to bottom of viewport
+                            var topStyle = {}
+                            bottomPercentage = (pictureNum - 1) * 100 + "%";
+                            topStyle['bottom'] = bottomPercentage;
+                            $(container).css(topStyle);
+
+                            $(last).animate(animDirec,animSpeed, function(){
+                                $(last).insertBefore(first);
+                                $(last).css(animReset);
+                                $(last).addClass('first');
+                                $(this).css({'top': ''});
+                            });
+                            $(secondLast).animate(animDirec,animSpeed, function(){
+                                $(secondLast).css(animReset);
+                                $(secondLast).addClass('second');
+                                $(this).css({'top': ''});
+                                availableForAnimating = true; //Avaiable for animating again
+                            });                     
+                        };
+
+                        //Set animate CSS Direction
+                        if(direction === 'bottom'){
+                            animDirec = {};
+                            animDirec[direction] = '100%';
+                            slideAll();
+                        }
+                        else if(direction === 'left'){
+                            animDirec = {};
+                            animDirec[direction] = -100 / pictureNum + "%";
+                            slideAll();
+                        }
+                        else if(direction === 'right'){
+                            animDirec = {};
+                            animDirec[direction] = -100 / pictureNum + "%";
+                            slideAll();
+                        }
+                        else if(direction === 'top'){
+                            animDirec = {};
+                            animDirec[direction] = '100%';
+                            slideTop();
+                        }
+
+                    }, delay);
+                };                
+            }
+
 
             //Pause on hover functions
             if (pauseOnHover === true){
@@ -289,7 +323,9 @@ var slideFunc = function(container, config){
                                     availableForAnimating = true;
                                     $('.box').css('left', '').css('right','')
                                 });
-                                slide();
+                                if(anim === true){
+                                    slide();
+                                }
                             };
                             
                             var animDirec = {};
@@ -301,6 +337,8 @@ var slideFunc = function(container, config){
                                 $(last).insertBefore(first);
                                 $(container).css({'left': -(pictureNum - 2)*100 + '%'});
 
+                                // console.log(-(pictureNum - 2)*100);  REMMMMMOOOVVVVEEEEEEEEEEEE
+
                             $(first).animate(animDirec,animSpeed);
 
                             $(last).animate(animDirec,animSpeed, function(){
@@ -311,7 +349,9 @@ var slideFunc = function(container, config){
                                 availableForAnimating = true;
                                 $('.box').css({'left': ''});
                                 });
-                                slide();
+                                if(anim === true){
+                                    slide();
+                                }
                             };
                             
                             var animDirec = {};
@@ -338,16 +378,20 @@ var slideFunc = function(container, config){
                                 $(last).insertBefore(first);
                                 $(container).css({'left':'-100%'});
                                 
-                                $(first).animate(animDirec,animSpeed);
+                                $(first).animate(animDirec,animSpeed, function(){
+                                    $(this).css({'left' : ''});
+                                });
 
                                 $(last).animate(animDirec,animSpeed, function(){
                                     $(container).css({'left':'0%'});
                                     $(last).css(animReset);
-                                    $('.box').css({'left':'0%'});
+                                    $(this).css({'left':''});
                                     animInProgress = false;
                                     availableForAnimating = true;
                                 });
-                                slide();
+                                if(anim === true){
+                                    slide();
+                                }
 
                             };
                                 
@@ -368,7 +412,9 @@ var slideFunc = function(container, config){
                                     animInProgress = false;
                                     availableForAnimating = true;
                                 });
-                                slide();
+                                if(anim === true){
+                                    slide();
+                                }
                             };
                             
                             var animDirec = {};
@@ -432,4 +478,12 @@ var slideFunc = function(container, config){
 };
 
 $(document).ready( 
-	slideFunc('.container', {direction: 'left', interval:2000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animFade: true}));
+	slideFunc('.container', {direction: 'bottom', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: false, animSlide: true, anim: true, progressBar: true})
+);
+
+
+
+
+
+
+
