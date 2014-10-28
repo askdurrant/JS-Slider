@@ -1,8 +1,10 @@
 <style>
 
+
+/* Outside container - Not necessary if contained in webpage */
 .outside{
-	width:300px;
-	height:406px;
+	width:600px;
+	height:400px;
 }
 
 .viewport{
@@ -12,14 +14,14 @@
 	position:relative;
 }
 
-.box{
-	display:inline-block;
-	position:relative;
-}
-
 .container{
 	position:relative;
 	height:100%;
+}
+
+.box{
+	display:block;
+	position:relative;
 }
 
 .box-left{
@@ -29,7 +31,71 @@
 	float:right;
 }
 
-.status img{
+/* CONTROLS */
+
+.controls{
+	margin: auto;
+	position: absolute;
+	height: 80px;
+	top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.controls .slider-left,
+.controls .slider-right{
+	height:80px;
+	width:80px;
+	background-repeat: no-repeat;
+	opacity: 0.3;
+	filter: alpha(opacity=30);
+	transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+}
+
+.controls .slider-left{
+	background: url('images/left.png');
+	float: left;
+}
+
+.controls .slider-right{
+	background: url('images/right.png');
+	float: right;
+}
+
+.controls .slider-left:hover,
+.controls .slider-right:hover
+{
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+/* CHANGE DIRECTION */
+
+.change-direction{
+	background: url('images/switch.png');
+	height: 60px;
+	width: 60px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	opacity: 0.3;
+	filter: alpha(opacity=30);
+	transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+}
+
+.change-direction:hover{
+	opacity: 1;
+	filter: alpha(opacity=100);	
+}
+
+
+/* PLAY / PAUSE */
+
+.slider-button{
+	height:60px;
+	width: 60px;	
 	position: absolute;
 	margin: auto;
 	right: 2%;
@@ -37,169 +103,47 @@
 	z-index: 999;
 }
 
+.slider-play{
+	background: url(images/play.png);
+}
+
+.slider-pause{
+	background: url(images/pause.png);
+}
+
+
+/* EXAMPLE STYLING FOR BACKGROUND IMAGE */
+
+/*.slide1{
+	background: url('images/1.png');
+	width: 100%;
+	height: 0;
+	padding-bottom: 135%;
+}*/
+
 </style>
 
 <div class="outside">
 	<div class="viewport">
-		<div class="status">
-			<img class="slider-play slider-button" src="http://riverisland.scene7.com/is/image/RiverIsland/play?$PNG%20Alpha%20Transparency$" style="display:none"/>
-			<img class="slider-pause slider-button" src="http://riverisland.scene7.com/is/image/RiverIsland/pause?$PNG%20Alpha%20Transparency$" style="display:none"/>
-		</div>
 		<div class="container">
-			<div class="box">
-				<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dwwprod1?$JPG%20No%20Scale%2085pc$&scl=2">
+			<div class="box slide1">
+				<img src="images/1.png">
 			</div>
-			<div class="box">
-				<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dwwprod1b?$JPG%20No%20Scale%2085pc$&scl=2">
+			<div class="box slide2">
+				<img src="images/2.png">
 			</div>
-			<div class="box">
-				<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dmwprod1?$JPG%20No%20Scale%2085pc$&scl=2">
+			<div class="box slide3">
+				<img src="images/3.png">
 			</div>
-			<div class="box">
-				<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dmwprod1b?$JPG%20No%20Scale%2085pc$&scl=2">
+			<div class="box slide4">
+				<img src="images/4.png">
 			</div>
-			<div class="box">
-				<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dwwprod1?$JPG%20No%20Scale%2085pc$&scl=2">
-			</div>
-			<div class="box">
-				<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dwwprod1b?$JPG%20No%20Scale%2085pc$&scl=2">
-			</div>
-			<div class="box">
-				<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dmwprod1?$JPG%20No%20Scale%2085pc$&scl=2">
-			</div>
-			<div class="box">
-				<img src="http://riverisland.scene7.com/is/image/RiverIsland/c20140821%2Dhp%2Dgrey%2Dmwprod1b?$JPG%20No%20Scale%2085pc$&scl=2">
-			</div>
-
 		</div>
-	</div>
-
-	<div class="button">
-		<ul>
-			<li class="slider-left">Left</li>
-			<li class="slider-right">Right</li>
-			<li class="slider-switch">Switch</li>
-		</ul>
+		<div class="change-direction">
+			<div class="slider-switch"></div>
+		</div>
 	</div>
 </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
 <script src="multi-slider-new.js"></script>
-
-<script>
-// var blah = function(container, config){
-
-// 	var container = container;
-	
-// 	//Config Attributes
-// 	var delay = config['delay'];
-// 	var interval = config['interval'];
-// 	var direction = config['direction'];
-// 	var animSpeed = config['animSpeed'];
-
-// 	//Set defaults
-// 	var defaultDelay = 1000;
-// 	var defaultInterval = 1000;
-// 	var defaultDirection = 'left';
-// 	var defaultAnimSpeed = 800;
-
-// 	//Test if undefined
-// 	delay = (typeof delay === "undefined") ? defaultDelay : delay;
-// 	interval = (typeof interval === "undefined") ? defaultInterval : interval;
-// 	direction = (typeof direction === "undefined") ? defaultDirection : direction;
-// 	animSpeed = (typeof animSpeed === "undefined") ? defaultAnimSpeed : animSpeed;
-
-// 	//No. of pics and last pic
-// 	var pictureNum = $(container + ' .box').length;
-// 	var lastPic = pictureNum - 1;
-
-// 	var animReset = {};
-// 	animReset[direction] = '0%';
-
-// 	var animInProgress = false;
-
-// 	$(window).on('keydown', keyPressFunction);
-
-// 	$('.slider-left').on('click', keyPressFunction);
-// 	$('.slider-right').on('click', keyPressFunction);
-
-// 	function keyPressFunction(e){
-
-// 		var keyPressLeft = (typeof e.which != 'undefined' && e.which === 37);
-// 		var keyPressRight = (typeof e.which != 'undefined' && e.which === 39);
-
-// 		var clickPressVarLeft = (typeof e.which != 'undefined' && $(this).is(".slider-left") === true);
-// 		var clickPressVarRight = (typeof e.which != 'undefined' && $(this).is(".slider-right") === true);
-
-// 		if ( keyPressLeft || clickPressVarLeft ){
-
-// 			if (animInProgress === true){
-// 				return false;
-// 			}
-
-// 			animInProgress = true;
-		
-// 			var first = $(container + ' .box')[0];
-// 			var second = $(container + ' .box')[1];
-// 			var last = $(container + ' .box')[lastPic];
-
-// 			var manualSlideAll = function(){
-// 				$(first).animate(animDirec,animSpeed, function(){
-// 					$(first).insertAfter(last);
-// 					$(first).css(animReset);
-// 				});
-// 				$(second).animate(animDirec,animSpeed, function(){
-// 					$(second).css(animReset);
-// 					animInProgress = false;
-// 				});
-// 			};
-			
-// 			var animDirec = {};
-// 			animDirec[direction] = '-50%';
-// 			manualSlideAll();
-		
-// 		} else if ( keyPressRight || clickPressVarRight ) {
-
-// 			if (animInProgress === true){
-// 				return false;
-// 			}
-
-// 			animInProgress = true;
-		
-// 			var first = $(container + ' .box')[0];
-// 			var second = $(container + ' .box')[1];
-// 			var last = $(container + ' .box')[lastPic];
-
-// 			var manualSlideAll = function(){
-// 				$(last).insertBefore(first);
-// 				$(container).css({'position':'relative', 'left':'-100%'})
-				
-// 				$(first).animate(animDirec,animSpeed);
-
-// 				$(last).animate(animDirec,animSpeed, function(){
-// 					$(container).css({'left':'0%'});
-// 					$(last).css(animReset);
-// 					$('.box').css({'left':'0%'});
-// 					animInProgress = false;
-// 				});
-
-
-// 			};
-			
-// 			var animDirec = {};
-// 			animDirec[direction] = '50%';
-// 			manualSlideAll();
-		
-// 		}
-		
-// 	};
-
-
-
-// };
-
-// 	$(document).ready(
-// 		blah('.container', {direction: 'left', interval:3000, delay:0, animSpeed:800})
-// 	);
-</script>

@@ -13,6 +13,7 @@ var slideFunc = function(container, config){
     var animFade = config ['animFade'];
     var anim = config ['anim'];
     var progressBar = config ['progressBar'];
+    var changeDir = config ['changeDir'];
 
     //Set default values for config attributes
     var defaultDelay = 0;
@@ -25,6 +26,7 @@ var slideFunc = function(container, config){
     var defaultAnimFade = false;
     var defaultAnim = true;
     var defaultProgress = false;
+    var defaultChangeDir = false;
 
     //Available for animating. Sets default value to true
     var availableForAnimating = true;
@@ -52,7 +54,7 @@ var slideFunc = function(container, config){
     if(animSlide === true){
 
         if(progressBar === true){
-            $('.button').append('<ul class="progress-bar"></ul>');
+            $('.button').prepend('<ul class="progress-bar"></ul>');
             for(i=0; i < pictureNum; i++){
                 boxNumber = 'position' + (i+1);
                 boxElement = $('.box')[i];
@@ -69,6 +71,12 @@ var slideFunc = function(container, config){
             var blah = 'position' + [0];
             var blahCont = $(container + ' .box')[0];
 
+        }
+
+        
+        // Adds Controls
+        if (controls === true && (direction === 'left' || direction === 'right')){
+            $(container).after('<div class="controls"><div class="slider-left"></div><div class="slider-right"></div></div>');
         }
 
         var animSlideFn = function(){
@@ -103,6 +111,9 @@ var slideFunc = function(container, config){
                 bottomPercentage = (pictureNum - 1) * 100 + '%';
                 topStyle['bottom'] = bottomPercentage;
                 $(container).css(topStyle);
+                // Reverse order of divs so 1st div is in 1st position
+                reverseOrder = $(container).children('div');
+                $(container).append(reverseOrder.get().reverse());
             };
 
             //Adds class for left and right directions for initial direction definition
@@ -123,29 +134,32 @@ var slideFunc = function(container, config){
             //Changes direction of slide on mouse click
             //Checks if animation is already in progress. If so, stroes string in
             //queueDirectionChange
-            var changeDirection = function(){
-                if (animInProgress === true || availableForAnimating === false){
-                    queueDirectionChange = 'queue';
-                    return queueDirectionChange;
-                }
-                else{
-                    if(direction === 'left'){
-                        direction = 'right';
-                        $(container).removeClass('left').addClass('right').css('left',containerOffset);
-                        $('.box').removeClass('box-left').addClass('box-right');
-                        $('.box').css('left', '').css('right','');
-                        containerOffsetFn();
-                        return direction;
+            if(changeDir === true){
+
+                var changeDirection = function(){
+                    if (animInProgress === true || availableForAnimating === false){
+                        queueDirectionChange = 'queue';
+                        return queueDirectionChange;
                     }
-                    else if(direction === 'right'){
-                        direction = 'left';
-                        $(container).removeClass('right').addClass('left').css('left', '');
-                        $('.box').removeClass('box-right').addClass('box-left');
-                        $(container).css('right', '');
-                        return direction;
+                    else{
+                        if(direction === 'left'){
+                            direction = 'right';
+                            $(container).removeClass('left').addClass('right').css('left',containerOffset);
+                            $('.box').removeClass('box-left').addClass('box-right');
+                            $('.box').css('left', '').css('right','');
+                            containerOffsetFn();
+                            return direction;
+                        }
+                        else if(direction === 'right'){
+                            direction = 'left';
+                            $(container).removeClass('right').addClass('left').css('left', '');
+                            $('.box').removeClass('box-right').addClass('box-left');
+                            $(container).css('left', '').css('right', '');
+                            return direction;
+                        }
                     }
-                }
-            };
+                };
+            }
             
             // Automatic animation option
             if(anim === true){
@@ -178,7 +192,7 @@ var slideFunc = function(container, config){
 
                         //Set animate end point
                         var animReset = {};
-                        animReset[direction] = '0%';
+                        animReset[direction] = '';
                         var animDirec;
 
                         //Set slide functions for left, right, bottom
@@ -186,11 +200,9 @@ var slideFunc = function(container, config){
                             $(first).animate(animDirec,animSpeed, function(){
                                 $(first).insertAfter(last);
                                 $(first).css(animReset);
-                                $(first).addClass('first');
                             });
                             $(second).animate(animDirec,animSpeed, function(){
                                 $(second).css(animReset);
-                                $(second).addClass('second');
                                 availableForAnimating = true; //Avaiable for animating again
                             });
                         };
@@ -208,12 +220,12 @@ var slideFunc = function(container, config){
                                 $(last).insertBefore(first);
                                 $(last).css(animReset);
                                 $(last).addClass('first');
-                                $(this).css({'top': ''});
+                                $(this).css(animReset);
                             });
                             $(secondLast).animate(animDirec,animSpeed, function(){
                                 $(secondLast).css(animReset);
                                 $(secondLast).addClass('second');
-                                $(this).css({'top': ''});
+                                $(this).css(animReset);
                                 availableForAnimating = true; //Avaiable for animating again
                             });                     
                         };
@@ -247,6 +259,8 @@ var slideFunc = function(container, config){
 
             //Pause on hover functions
             if (pauseOnHover === true){
+                //Add controls
+                $(container).after('<div class="status"><div class="slider-play slider-button"></div><div class="slider-pause slider-button"></div></div>');
                 //Hide and show play and pause buttons
                 var playButton = function(){
                     $('.slider-pause').css('display','none');
@@ -287,6 +301,8 @@ var slideFunc = function(container, config){
 
             $('.slider-left').on('click', keyPressFunction);
             $('.slider-right').on('click', keyPressFunction);
+
+
 
             function keyPressFunction(e){
 
@@ -450,6 +466,8 @@ var slideFunc = function(container, config){
         }
         //Pause on hover function - As above
         if (pauseOnHover === true){
+            //Add controls
+            $(container).after('<div class="status"><img class="slider-play slider-button" src="http://riverisland.scene7.com/is/image/RiverIsland/play?$PNG%20Alpha%20Transparency$" style="display:none"/><img class="slider-pause slider-button" src="http://riverisland.scene7.com/is/image/RiverIsland/pause?$PNG%20Alpha%20Transparency$" style="display:none"/></div>');
             //Hide and show play and pause buttons
             var playButton = function(){
                 $('.slider-pause').css('display','none');
@@ -478,7 +496,7 @@ var slideFunc = function(container, config){
 };
 
 $(document).ready( 
-	slideFunc('.container', {direction: 'bottom', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: false, animSlide: true, anim: true, progressBar: true})
+	slideFunc('.container', {direction: 'left', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animSlide: true, anim: true, progressBar: true, changeDir: true})
 );
 
 
