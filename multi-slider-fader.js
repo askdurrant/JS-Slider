@@ -134,32 +134,31 @@ var slideFunc = function(container, config){
             //Changes direction of slide on mouse click
             //Checks if animation is already in progress. If so, stroes string in
             //queueDirectionChange
-            if(changeDir === true){
 
-                var changeDirection = function(){
-                    if (animInProgress === true || availableForAnimating === false){
-                        queueDirectionChange = 'queue';
-                        return queueDirectionChange;
+            var changeDirection = function(){
+                if (animInProgress === true || availableForAnimating === false){
+                    queueDirectionChange = 'queue';
+                    return queueDirectionChange;
+                }
+                else{
+                    if(direction === 'left'){
+                        direction = 'right';
+                        $(container).removeClass('left').addClass('right').css('left',containerOffset);
+                        $('.box').removeClass('box-left').addClass('box-right');
+                        $('.box').css('left', '').css('right','');
+                        containerOffsetFn();
+                        return direction;
                     }
-                    else{
-                        if(direction === 'left'){
-                            direction = 'right';
-                            $(container).removeClass('left').addClass('right').css('left',containerOffset);
-                            $('.box').removeClass('box-left').addClass('box-right');
-                            $('.box').css('left', '').css('right','');
-                            containerOffsetFn();
-                            return direction;
-                        }
-                        else if(direction === 'right'){
-                            direction = 'left';
-                            $(container).removeClass('right').addClass('left').css('left', '');
-                            $('.box').removeClass('box-right').addClass('box-left');
-                            $(container).css('left', '').css('right', '');
-                            return direction;
-                        }
+                    else if(direction === 'right'){
+                        direction = 'left';
+                        $(container).removeClass('right').addClass('left').css('left', '');
+                        $('.box').removeClass('box-right').addClass('box-left');
+                        $(container).css('left', '').css('right', '');
+                        return direction;
                     }
-                };
+                }
             }
+
             
             // Automatic animation option
             if(anim === true){
@@ -287,7 +286,10 @@ var slideFunc = function(container, config){
             }
 
             //Change direction
-            $('.slider-switch').on('click', changeDirection);
+            if(changeDir === true && (direction === 'left' || direction === 'right')){
+                $(container).after('<div class="change-direction"><div class="slider-switch"></div></div>');
+                $('.slider-switch').on('click', changeDirection);
+            }
 
             //Manual Slide function on click or keyboard event
             //Controls are on by default
@@ -496,7 +498,7 @@ var slideFunc = function(container, config){
 };
 
 $(document).ready( 
-	slideFunc('.container', {direction: 'left', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animSlide: true, anim: true, progressBar: true, changeDir: true})
+	slideFunc('.container', {direction: 'right', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animSlide: true, anim: true, progressBar: true, changeDir: true})
 );
 
 

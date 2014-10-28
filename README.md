@@ -128,6 +128,10 @@ __CSS__
 	filter: alpha(opacity=100);	
 }
 
+.slider-switch{
+	height: 100%;
+	width: 100%;
+}
 
 /* PLAY / PAUSE */
 
