@@ -52,7 +52,7 @@ __CSS__
 	position:relative;
 }
 
-.example-container{
+.container{
 	position:relative;
 	height:100%;
 }
@@ -69,13 +69,87 @@ __CSS__
 	float:right;
 }
 
-.status img{
+/* CSS FOR PLAY/PAUSE & CONTROLS */
+
+.controls{
+	margin: auto;
+	position: absolute;
+	height: 80px;
+	top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.controls .slider-left,
+.controls .slider-right{
+	height:80px;
+	width:80px;
+	background-repeat: no-repeat;
+	opacity: 0.3;
+	filter: alpha(opacity=30);
+	transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+}
+
+.controls .slider-left{
+	background: url('images/left.png');
+	float: left;
+}
+
+.controls .slider-right{
+	background: url('images/right.png');
+	float: right;
+}
+
+.controls .slider-left:hover,
+.controls .slider-right:hover
+{
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+/* CHANGE DIRECTION */
+
+.change-direction{
+	background: url('images/switch.png');
+	height: 60px;
+	width: 60px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	opacity: 0.3;
+	filter: alpha(opacity=30);
+	transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+}
+
+.change-direction:hover{
+	opacity: 1;
+	filter: alpha(opacity=100);	
+}
+
+
+/* PLAY / PAUSE */
+
+.slider-button{
+	height:60px;
+	width: 60px;	
 	position: absolute;
 	margin: auto;
 	right: 2%;
 	bottom: 2%;
 	z-index: 999;
 }
+
+.slider-play{
+	background: url(images/play.png);
+}
+
+.slider-pause{
+	background: url(images/pause.png);
+}
+
+
 
 Images can either be put directly inside the .box divs or can be set as background images of .slide1, .slide2 etc.
 
