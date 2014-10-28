@@ -176,3 +176,8 @@ $(document).ready(
 
 1. The container class must be defined on calling the script
 2. Each slide must have the class '.box' for the slider to work
+3. The viewport must have the class '.viewport'
+
+### Note
+
+Change direction and manual controls only work for moving horizontally and not vertically.

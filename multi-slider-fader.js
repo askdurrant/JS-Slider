@@ -63,7 +63,11 @@ var slideFunc = function(container, config){
             for(i=0; i < pictureNum; i++){
                 $('.progress-bar').append('<li class="dot">&bull;</li>');
             }
+
+            dotWidth = (100 / pictureNum) + '%';
+
             $('.progress-bar li:first').addClass('active');
+            $('.progress-bar .dot').css({'width' : dotWidth})
         }
 
 
@@ -74,7 +78,7 @@ var slideFunc = function(container, config){
             $('.progress-bar').children().removeClass('active');
             // Progress bar for 'top'
             if(direction === 'top'){
-                var selectedBox = $('.box')[3];
+                var selectedBox = $('.box')[pictureNum - 1];
                 for(k = pictureNum; k > 0; k--){
                     if($(selectedBox).hasClass('slide' + (k))){
                         $('.progress-bar .dot').eq(k-1).addClass('active');
@@ -533,10 +537,3 @@ var slideFunc = function(container, config){
 $(document).ready( 
 	slideFunc('.container', {direction: 'bottom', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animSlide: true, anim: true, progressBar: true, changeDir: true})
 );
-
-
-
-
-
-
-
