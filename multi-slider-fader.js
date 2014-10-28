@@ -47,33 +47,51 @@ var slideFunc = function(container, config){
     anim = (typeof anim === "undefined") ? defaultAnim : anim;
     progressBar = (typeof progressBar === "undefined") ? defaultProgress : progressBar;
 
+    // IE FIX
+
+    var console = console||{"log":function(){}};
+
     //Find number of pics and last pic position
     var pictureNum = $(container + ' .box').length;
     var lastPic = pictureNum - 1;
 
     if(animSlide === true){
 
+        // Creates progress bar beneath the viewport
         if(progressBar === true){
-            $('.button').prepend('<ul class="progress-bar"></ul>');
+            $('.viewport').after('<ul class="progress-bar"></ul>');
             for(i=0; i < pictureNum; i++){
-                boxNumber = 'position' + (i+1);
-                boxElement = $('.box')[i];
-                $('.progress-bar').append('<li class="' + boxNumber + '">' + (i + 1) + '</li>');
-                $(boxElement).addClass(boxNumber);
+                $('.progress-bar').append('<li class="dot">&bull;</li>');
             }
-            var selectedBox = $('.box')[0];
-            $(selectedBox).addClass('selected');      
-
-            if($(container + ' > div').hasClass('selected') === true){
-                console.log($('.selected').attr("class"));
-            }       
-
-            var blah = 'position' + [0];
-            var blahCont = $(container + ' .box')[0];
-
+            $('.progress-bar li:first').addClass('active');
         }
 
-        
+
+        // Progress bar function
+        function inViewport(){
+            // Removes active class
+            $(container).children().removeClass('active');
+            $('.progress-bar').children().removeClass('active');
+            // Progress bar for 'top'
+            if(direction === 'top'){
+                var selectedBox = $('.box')[3];
+                for(k = pictureNum; k > 0; k--){
+                    if($(selectedBox).hasClass('slide' + (k))){
+                        $('.progress-bar .dot').eq(k-1).addClass('active');
+                    }
+                }   
+            }
+            // Progress bar for everything else
+            else{
+                var selectedBox = $('.box')[0];
+                for(k = 0; k < pictureNum; k++){
+                    if($(selectedBox).hasClass('slide' + (k + 1))){
+                        $('.progress-bar .dot').eq(k).addClass('active');
+                    }
+                }                
+            }
+        }
+
         // Adds Controls
         if (controls === true && (direction === 'left' || direction === 'right')){
             $(container).after('<div class="controls"><div class="slider-left"></div><div class="slider-right"></div></div>');
@@ -126,9 +144,6 @@ var slideFunc = function(container, config){
                 $(container + '> .box').addClass('box-right');
                 var boxWidth = (100 / pictureNum) + '%';
                 $('.box-right').css('width', boxWidth);
-            }
-            else{
-                console.log(direction)
             }
 
             //Changes direction of slide on mouse click
@@ -196,9 +211,13 @@ var slideFunc = function(container, config){
 
                         //Set slide functions for left, right, bottom
                         var slideAll = function(){
+                            inViewport()
                             $(first).animate(animDirec,animSpeed, function(){
                                 $(first).insertAfter(last);
                                 $(first).css(animReset);
+                                if(changeDir === true){
+                                    inViewport();
+                                }
                             });
                             $(second).animate(animDirec,animSpeed, function(){
                                 $(second).css(animReset);
@@ -208,7 +227,7 @@ var slideFunc = function(container, config){
 
                         //Slide down from top function
                         var slideTop = function(){
-
+                            inViewport()
                             //Positions bottom of container div to bottom of viewport
                             var topStyle = {}
                             bottomPercentage = (pictureNum - 1) * 100 + "%";
@@ -220,6 +239,9 @@ var slideFunc = function(container, config){
                                 $(last).css(animReset);
                                 $(last).addClass('first');
                                 $(this).css(animReset);
+                                if(changeDir === true){
+                                    inViewport();
+                                }
                             });
                             $(secondLast).animate(animDirec,animSpeed, function(){
                                 $(secondLast).css(animReset);
@@ -334,6 +356,9 @@ var slideFunc = function(container, config){
                                 $(first).animate(animDirec,animSpeed, function(){
                                     $(first).insertAfter(last);
                                     $(first).css(animReset);
+                                    if(changeDir === true){
+                                        inViewport();
+                                    }
                                 });
                                 $(second).animate(animDirec,animSpeed, function(){
                                     $(second).css(animReset);
@@ -355,9 +380,10 @@ var slideFunc = function(container, config){
                                 $(last).insertBefore(first);
                                 $(container).css({'left': -(pictureNum - 2)*100 + '%'});
 
-                                // console.log(-(pictureNum - 2)*100);  REMMMMMOOOVVVVEEEEEEEEEEEE
-
                             $(first).animate(animDirec,animSpeed);
+                            if(changeDir === true){
+                                inViewport();
+                            }
 
                             $(last).animate(animDirec,animSpeed, function(){
                                 $(container).css({'left':containerOffset});
@@ -400,6 +426,10 @@ var slideFunc = function(container, config){
                                     $(this).css({'left' : ''});
                                 });
 
+                                if(changeDir === true){
+                                    inViewport();
+                                }
+
                                 $(last).animate(animDirec,animSpeed, function(){
                                     $(container).css({'left':'0%'});
                                     $(last).css(animReset);
@@ -423,6 +453,9 @@ var slideFunc = function(container, config){
                                     $(first).insertAfter(last);
                                     $(first).css(animReset);
                                     $(first).css('left', '').css('right', '');
+                                    if(changeDir === true){
+                                        inViewport();
+                                    }
                                 });
                                 $(second).animate(animDirec,animSpeed, function(){
                                     $(second).css(animReset);
@@ -498,7 +531,7 @@ var slideFunc = function(container, config){
 };
 
 $(document).ready( 
-	slideFunc('.container', {direction: 'right', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animSlide: true, anim: true, progressBar: true, changeDir: true})
+	slideFunc('.container', {direction: 'bottom', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animSlide: true, anim: true, progressBar: true, changeDir: true})
 );
 
 
