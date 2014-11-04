@@ -28,18 +28,18 @@ Include the jQuery library in your document.
 
 __HTML__
 
-<div class="viewport">
-	<div class="example-container">
-		<div class="box slide1">
-		</div>
-		<div class="box slide2">
-		</div>
-		<div class="box slide3">
-		</div>
-		<div class="box slide4">
+	<div class="viewport">
+		<div class="example-container">
+			<div class="box slide1">
+			</div>
+			<div class="box slide2">
+			</div>
+			<div class="box slide3">
+			</div>
+			<div class="box slide4">
+			</div>
 		</div>
 	</div>
-</div>
 
 __CSS__
 
