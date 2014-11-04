@@ -16,7 +16,7 @@ Available Options
 * animSlide (default = false) - Sets the animation type to a slider (Possible values: true, false)
 * animFade (default = false) - Sets the animation type to a fader (Possible values: true, false)
 * anim (default = true) - Defines if you want animations to happen automatically (Possible values: true, false)
-* progress(default = false) - Defines if you want a progress bar to show which slide you are on (NOT AVAILABLE YET)
+* progress(default = false) - Defines if you want a progress bar to show which slide you are on (Possible values: true, false)
 
 
 Setup
@@ -158,7 +158,6 @@ __CSS__
 Images can either be put directly inside the .box divs or can be set as background images of .slide1, .slide2 etc.
 
 ### Calling the Script
-
 
 $(document).ready( 
 	slideFunc('//Class of the container', { //OPTIONS HERE })
