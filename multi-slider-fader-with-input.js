@@ -19,7 +19,7 @@ var slideFunc = function(container, config){
     var defaultDelay = 0;
     var defaultInterval = 1000;
     var defaultDirection = 'left';
-    var defaultAnimSpeed = 800;
+    var defaultAnimSpeed = 1200;
     var defaultControls = true;
     var defaultPauseOnHover = true;
     var defaultAnimSlide = false;
@@ -565,6 +565,95 @@ var slideFunc = function(container, config){
     }
 };
 
-$(document).ready( 
-	slideFunc('.container', {direction: 'right', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animFade: true, anim: true, progressBar: true, changeDir: true})
-);
+$(document).ready(function(){
+
+    var divClone = $('.container').clone();
+    var containerNo = 'container';
+    var i = 1;
+
+    $('#inputs').submit(function(event){
+        event.preventDefault();
+
+        var newCont = containerNo + i;
+        i++
+
+        var newContClass = '.' + newCont;
+        $('.progress-bar').remove();
+        $('.container').replaceWith(divClone.clone());
+        $('.container').addClass(newCont);
+
+        delayInput = $('#delayForm').val();
+        intervalInput = $('#intervalForm').val();
+        directionInput = $('#directionForm').val();
+        animSpeedInput = $('#animSpeedForm').val();
+        controlsInput = $('#controlsForm').val();
+        pauseOnHoverInput = $('#pauseOnHoverForm').val();
+        animTypeInput = $('#animTypeForm').val();
+        animInput = $('#autoAnimForm').val();
+        progressBarInput = $('#progressBarForm').val();
+        changeDirInput = $('#changeDirForm').val();
+
+        delayInput = (delayInput === '') ? undefined : delayInput;
+        intervalInput = (intervalInput === '') ? undefined : intervalInput;
+        animSpeedInput = (animSpeedInput === '') ? undefined : animSpeedInput;
+
+        if(pauseOnHoverInput === 'true'){
+            pauseOnHoverInput = true;
+        }
+        else{
+            pauseOnHoverInput = false;
+        }
+
+        if(controlsInput === 'true'){
+            controlsInput = true;
+        }
+        else{
+            controlsInput = false;
+        }
+
+        if(animInput === 'true'){
+            animInput = true;
+        }
+        else{
+            animInput = false;
+        }
+
+        if(progressBarInput === 'true'){
+            progressBarInput = true;
+        }
+        else{
+            progressBarInput = false;
+        }
+
+        if(changeDirInput === 'true'){
+            changeDirInput = true;
+        }
+        else{
+            changeDirInput = false;
+        }
+
+        if(animTypeInput === 'slider'){
+            animSlideInput = true;
+            animFadeInput = false;
+        }
+        else{
+            animSlideInput = false;
+            animFadeInput = true;
+        }
+
+        slideFunc(newContClass, {
+            delay: delayInput,
+            interval: intervalInput,
+            direction: directionInput,
+            animSpeed: animSpeedInput,
+            controls: controlsInput,
+            pauseOnHover: pauseOnHoverInput,
+            animSlide: animSlideInput,
+            animFade: animFadeInput,
+            anim: animInput,
+            progressBar: progressBarInput,
+            changeDir: changeDirInput
+        });
+
+    });
+});

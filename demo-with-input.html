@@ -6,6 +6,7 @@
 .outside{
 	max-width:600px;
 	text-align: center;
+	margin:0 auto;
 }
 
 .viewport{
@@ -141,7 +142,7 @@
 
 /* PROGRESS BAR */
 
-.progress-bar{
+.outside .progress-bar{
 	width: 30%;
 	display: block;
 	margin: 0 auto;
@@ -160,6 +161,37 @@
 
 .progress-bar .active{
 	color: #515151;
+}
+
+/* FORM STYLING */
+
+#inputs{
+    width: 400px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+label{
+    float: left;
+    width: 150px;
+}
+
+.row{
+    display: block;
+    width: 100%;
+    height: 55px;
+    margin: 10px;
+}
+select{
+    width: 150px;
+}
+input{
+    width:150px;
+}
+
+.button{
+    width: 200px;
+    margin-left: 50px;
 }
 
 </style>
@@ -195,5 +227,72 @@
 	</div>
 </div>
 
+<form id="inputs">
+    <div class="row">
+        <label>Type:</label>
+        <select id="animTypeForm">
+            <option value="slider">Slider</option>
+            <option value="fader">Fader</option>
+        </select>
+    </div>
+    <div class="row">
+        <label>Direction:</label>
+        <select id="directionForm">
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+            <option value="top">Top</option>
+            <option value="bottom">Bottom</option>
+        </select>
+    </div>
+    <div class="row">
+        <label>Animation Speed:<br /> (0 - 10000)</label>
+        <input type="text" id="animSpeedForm" placeholder="0-10000">
+    </div>
+    <div class="row">
+        <label>Interval Between Animation:<br /> (0 - 10000)</label>
+        <input type="text" id="intervalForm" placeholder="0-10000">
+    </div>
+    <div class="row">
+        <label>Start Delay:<br /> (0 - 10000)</label>
+        <input type="text" id="delayForm" placeholder="0-10000">
+    </div>
+    <div class="row">
+        <label>Pause on Hover:</label>
+        <select id="pauseOnHoverForm">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+    </div>
+    <div class="row">
+        <label>Auto Animate:</label>
+        <select id="autoAnimForm">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+    </div>
+    <div class="row">
+        <label>Display Controls:</label>
+        <select id="controlsForm">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+    </div>
+    <div class="row">
+        <label>Display Progress Bar:</label>
+        <select id="progressBarForm">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+    </div>
+    <div class="row">
+        <label>Change Direction:</label>
+        <select id="changeDirForm">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+    </div>
+    <input class="button" type="submit" name="submit" value="Submit">
+</form>
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="multi-slider-fader.js"></script>
+<script src="multi-slider-fader-with-input.js"></script>
