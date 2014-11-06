@@ -156,13 +156,20 @@ var slideFunc = function(container, config){
             }
             //Positions bottom of container div to bottom of viewport
             if (direction === 'top'){
+                $(container).css({'height' : (pictureNum * 100) + '%' });
+                $(container + ' .box').css({'height' : 100 / pictureNum + "%"});
                 var topStyle = {}
-                bottomPercentage = (pictureNum - 1) * 100 + '%';
-                topStyle['bottom'] = bottomPercentage;
+                bottomPercentage = -(pictureNum - 1) * 100 + '%';
+                topStyle['top'] = bottomPercentage;
                 $(container).css(topStyle);
                 // Reverse order of divs so 1st div is in 1st position
                 reverseOrder = $(container).children('div');
                 $(container).append(reverseOrder.get().reverse());
+            };
+
+            if (direction === 'bottom'){
+                $(container).css({'height' : (pictureNum * 100) + '%' });
+                $(container + ' .box').css({'height' : 100 / pictureNum + "%"});
             };
 
             //Adds class for left and right directions for initial direction definition
@@ -285,7 +292,7 @@ var slideFunc = function(container, config){
                         //Set animate CSS Direction
                         if(direction === 'bottom'){
                             animDirec = {};
-                            animDirec[direction] = '100%';
+                            animDirec[direction] = 100 / pictureNum + "%";
                             slideAll();
                         }
                         else if(direction === 'left'){
@@ -300,7 +307,7 @@ var slideFunc = function(container, config){
                         }
                         else if(direction === 'top'){
                             animDirec = {};
-                            animDirec[direction] = '100%';
+                            animDirec[direction] = 100 / pictureNum + "%";
                             slideTop();
                         }
 
@@ -562,5 +569,5 @@ var slideFunc = function(container, config){
 };
 
 $(document).ready( 
-	slideFunc('.container', {direction: 'bottom', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animSlide: true, anim: true, progressBar: true, changeDir: true})
+	slideFunc('.container', {direction: 'right', interval:1000, delay:0, animSpeed:800, controls: true, pauseOnHover: true, animSlide: true, anim: true, progressBar: true, changeDir: true})
 );
