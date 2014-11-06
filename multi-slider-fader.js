@@ -48,12 +48,39 @@ var slideFunc = function(container, config){
     progressBar = (typeof progressBar === "undefined") ? defaultProgress : progressBar;
 
     // IE FIX
-
     var console = console||{"log":function(){}};
 
+
+    //Viewport Div Size
+    var viewportSize = $(container).parent().width() //DON'T KNOW IF NECESSARY!!
     //Find number of pics and last pic position
     var pictureNum = $(container + ' .box').length;
     var lastPic = pictureNum - 1;
+
+    //Pic Width calculations
+    var picWidth = [];
+    var picHeight = [];
+    var picWidthTotal = 0;
+    var picWidthAll = 0;
+
+    // Finds padding for .viewport
+    var box = $('.box img')[0];
+    // Finds natural height/width - fallback for IE8 and under
+    if (typeof box.naturalWidth == "undefined") {
+        // IE 6/7/8
+        var i = new Image();
+        i.src = box.src;
+        var boxWidth = i.width;
+        var boxHeight = i.height;
+    }
+    else {
+        // HTML5 browsers
+        var boxWidth = box.naturalWidth;
+        var boxHeight = box.naturalHeight;
+    }
+
+    var viewportPadding = ( ( boxHeight / boxWidth ) * 100) + '%';
+    $(container).parent().css({'padding-bottom' : viewportPadding});
 
     if(animSlide === true){
 
