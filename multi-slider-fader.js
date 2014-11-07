@@ -388,26 +388,32 @@ var slideFunc = function(container, config){
 
                         if (direction === "left"){
                             var manualSlideAll = function(){
+                                $(last).insertBefore(first);
+                                $(container).css({'left':'-100%'});
+                                
                                 $(first).animate(animDirec,animSpeed, function(){
-                                    $(first).insertAfter(last);
-                                    $(first).css(animReset);
-                                    if(changeDir === true){
-                                        inViewport();
-                                    }
+                                    $(this).css({'left' : ''});
                                 });
-                                $(second).animate(animDirec,animSpeed, function(){
-                                    $(second).css(animReset);
+
+                                if(changeDir === true){
+                                    inViewport();
+                                }
+
+                                $(last).animate(animDirec,animSpeed, function(){
+                                    $(container).css({'left':'0%'});
+                                    $(last).css(animReset);
+                                    $(this).css({'left':''});
                                     animInProgress = false;
                                     availableForAnimating = true;
-                                    $('.box').css('left', '').css('right','')
                                 });
                                 if(anim === true){
                                     slide();
                                 }
+
                             };
-                            
+                                
                             var animDirec = {};
-                            animDirec[direction] = -100 / pictureNum + "%";
+                            animDirec[direction] = 100 / pictureNum + "%";
                             manualSlideAll();
                         }
                         else if (direction === "right"){
@@ -454,32 +460,26 @@ var slideFunc = function(container, config){
 
                         if (direction === "left"){
                             var manualSlideAll = function(){
-                                $(last).insertBefore(first);
-                                $(container).css({'left':'-100%'});
-                                
                                 $(first).animate(animDirec,animSpeed, function(){
-                                    $(this).css({'left' : ''});
+                                    $(first).insertAfter(last);
+                                    $(first).css(animReset);
+                                    if(changeDir === true){
+                                        inViewport();
+                                    }
                                 });
-
-                                if(changeDir === true){
-                                    inViewport();
-                                }
-
-                                $(last).animate(animDirec,animSpeed, function(){
-                                    $(container).css({'left':'0%'});
-                                    $(last).css(animReset);
-                                    $(this).css({'left':''});
+                                $(second).animate(animDirec,animSpeed, function(){
+                                    $(second).css(animReset);
                                     animInProgress = false;
                                     availableForAnimating = true;
+                                    $('.box').css('left', '').css('right','')
                                 });
                                 if(anim === true){
                                     slide();
                                 }
-
                             };
-                                
+                            
                             var animDirec = {};
-                            animDirec[direction] = 100 / pictureNum + "%";
+                            animDirec[direction] = -100 / pictureNum + "%";
                             manualSlideAll();
                         }
                         else if (direction === "right"){
