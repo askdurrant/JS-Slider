@@ -537,7 +537,7 @@ var slideFunc = function(container, config){
         //Pause on hover function - As above
         if (pauseOnHover === true){
             //Add controls
-            $(container).after('<div class="status"><img class="slider-play slider-button" src="http://riverisland.scene7.com/is/image/RiverIsland/play?$PNG%20Alpha%20Transparency$" style="display:none"/><img class="slider-pause slider-button" src="http://riverisland.scene7.com/is/image/RiverIsland/pause?$PNG%20Alpha%20Transparency$" style="display:none"/></div>');
+            $(container).after('<div class="status"><img class="slider-play slider-button" src="images/play.png" style="display:none"/><img class="slider-pause slider-button" src="images/pause.png" style="display:none"/></div>');
             //Hide and show play and pause buttons
             var playButton = function(){
                 $('.slider-pause').css('display','none');
